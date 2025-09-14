@@ -1,6 +1,6 @@
 #CC=clang++
 CC=gcc
-CFLAGS=-c -Wall -pedantic -Werror -std=c89 
+CFLAGS=-c -Wall -pedantic -std=c89 
 LDFLAGS=
 SOURCES=MorsEng.c
 OBJECTS=$(SOURCES:.c=.o)
