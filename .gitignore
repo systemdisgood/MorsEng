@@ -1,0 +1,8 @@
+*
+!.gitattributes
+!.gitignore
+!.gitkeep
+!README.md
+!LICENSE
+!MorsEng.c
+!makefile
