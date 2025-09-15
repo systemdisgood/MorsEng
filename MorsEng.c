@@ -4,6 +4,11 @@
 #define MAX_STR_LEN 1023
 #define PRINTABLE_CHARS_QUANTITY 75
 
+#define WHWOQBQ 40
+
+const char wav_heading_without_quantity[WHWOQBQ] = {82, 73, 70, 70, 36, 1, 0, 0, 87, 65, 86, 69, 102, 109, 116, 32, 16, 0, 0, 0, 1, 0, 1, 0, 68, 172, 0, 0, 68, 172, 0, 0, 1, 0, 8, 0, 100, 97, 116, 97};
+
+
 char printable_chars[] = {'a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F', 'g', 'G', 'e', 'E', 'f', 'F', 'g', 'G', 'h', 'H', 'i', 'I', 'j', 'J', 'k', 'K', 'l', 'L', 'm', 'M', 'n', 'N', 'o', 'O', 'p', 'P', 'q', 'Q', 'r', 'R', 's', 'S', 't', 'T', 'u', 'U', 'v', 'V', 'w', 'W', 'x', 'X', 'y', 'Y', 'z', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '@', '.', ',', ':', '?', '\'', '-', '/', '(', ')', '"', '=', '*'};
 
 int check_ints(void)
@@ -33,16 +38,16 @@ void fprint_dot_dash(FILE* file, int dot_dash)
 	switch(dot_dash)
 	{
 		case DOT:
-			fprintf(file, "t");
+			fprintf(file, ".");
 			break;
 		case DASH:
-			fprintf(file, "h");
+			fprintf(file, "-");
 			break;
 		case PAUSE:
-			fprintf(file, "_");
+			fprintf(file, " ");
 			break;
 		case SPACE:
-			fprintf(file, " ");
+			fprintf(file, "     ");
 			break;
 		case NEW_LINE:
 			fprintf(file, "\n");
