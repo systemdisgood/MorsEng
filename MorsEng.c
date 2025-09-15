@@ -33,18 +33,19 @@ void fprint_dot_dash(FILE* file, int dot_dash)
 	switch(dot_dash)
 	{
 		case DOT:
-			fprintf(file, ".");
+			fprintf(file, "t");
 			break;
 		case DASH:
-			fprintf(file, "-");
+			fprintf(file, "h");
 			break;
 		case PAUSE:
-			fprintf(file, " ");
+			fprintf(file, "_");
+			break;
 		case SPACE:
-			fprintf(file, "       ");
+			fprintf(file, " ");
 			break;
 		case NEW_LINE:
-			fprintf(file, "\n\n");
+			fprintf(file, "\n");
 	}
 }
 
@@ -53,8 +54,8 @@ int main(int argc, char* argv[])
 	FILE* input_file = NULL;
 	FILE* output_file = NULL;
 	int input_character = 0;
-	int is_first_printable_in_paragraph = 1;
-	int is_wait_printable = 1;
+	int in_printable = 0;
+	int not_new_text = 0;
 	int was_new_line = 0;
 	int was_space = 0;
 	print_if_ok("ints", check_ints());
@@ -93,46 +94,59 @@ int main(int argc, char* argv[])
 	while((input_character = fgetc(input_file)) != EOF)
 	{
 		/*putchar(input_character);*/
-		if(is_first_printable_in_paragraph)
+		int i;
+		in_printable = 0;
+		for(i = 0; i < PRINTABLE_CHARS_QUANTITY; ++i)
 		{
-			int i;
-			for(i = 0; i < PRINTABLE_CHARS_QUANTITY; ++i)
+			if(input_character == printable_chars[i])
 			{
-				if(input_character == printable_chars[i])
+				in_printable = 1;
+				break;
+			}
+		}
+		if(in_printable)
+		{
+			if(was_new_line)
+			{
+				fprint_dot_dash(output_file, NEW_LINE);
+			}
+			else if(was_space)
+			{
+				fprint_dot_dash(output_file, SPACE);
+			} 
+			else 
+			{
+				if(not_new_text) 
 				{
-					is_first_printable_in_paragraph = 0;
-					break;
+					fprint_dot_dash(output_file, PAUSE);
 				}
+				else
+				{
+					not_new_text = 1;
+				}
+			}
+			was_space = 0;
+			was_new_line = 0;
+			switch(input_character)
+			{
+				case ' ':
+					in_printable = 0;
+					was_space = 1;
+					break;
+				case '\n':
+					in_printable = 0;
+					was_new_line = 1;
+					break;
+				case 'a':
+					fprint_dot_dash(output_file, DOT);
+					fprint_dot_dash(output_file, DASH);
+					break;
 			}
 		}
 		else
 		{
-			/*TODO*/
-			if(was_new_line)
-			{
-				fprint_dot_dash(input_file, NEW_LINE);
-				was_new_line = 0;
-			}
-			if(was_space)
-			{
-				fprint_dot_dash(input_file, SPACE);
-				was_space = 0;
-			}
-
-		}
-		switch(input_character)
-		{
-			case ' ':
-				is_wait_printable = 1;
-				break;
-			case '\n':
-				is_wait_printable = 1;
-				was_new_line = 1;
-				break;
-			case 'a':
-				fprint_dot_dash(output_file, DOT);
-				fprint_dot_dash(output_file, DASH);
-				break;
+			if(' ' == input_character) was_space = 1;
+			if('\n' == input_character) was_new_line = 1;
 		}
 	}
 	fprintf(output_file, "\n");
